@@ -1,0 +1,10 @@
+---
+default: 10240
+extensions:
+  lock: 1048576
+  md: 32768
+  nix: 16384
+  sh: 8192
+  json: 16384
+  yml: 8192
+  bats: 16384

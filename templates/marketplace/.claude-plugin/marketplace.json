@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "my-marketplace",
+  "description": "A sample Claude Code plugin marketplace",
+  "owner": {
+    "name": "Your Name"
+  },
+  "plugins": [
+    {
+      "name": "plugin-a",
+      "description": "First sample plugin",
+      "source": "./plugin-a",
+      "category": "productivity"
+    },
+    {
+      "name": "plugin-b",
+      "description": "Second sample plugin",
+      "source": "./plugin-b",
+      "category": "productivity"
+    }
+  ]
+}

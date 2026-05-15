@@ -1,0 +1,9 @@
+{
+  "name": "my-plugin",
+  "version": "0.1.0",
+  "description": "A sample Claude Code plugin",
+  "author": {
+    "name": "Your Name"
+  },
+  "license": "MIT"
+}
