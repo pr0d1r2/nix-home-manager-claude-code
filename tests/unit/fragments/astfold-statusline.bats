@@ -24,9 +24,11 @@ teardown() {
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-fast"
-  touch "$TEST_DIR/app.rb"
+  mkdir -p "$TEST_DIR/project"
+  touch "$TEST_DIR/project/app.rb"
   sed "s|@fast@|$TEST_DIR/bin/mock-fast|g" "$OLDPWD/nix/fragments/astfold-statusline.sh" > "$SCRIPT"
-  run bash -x "$SCRIPT"
+  cd "$TEST_DIR/project" || exit
+  run bash "$SCRIPT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"[ASTFOLD]"* ]]
   [[ "$output" == *"38;5;82m"* ]]
