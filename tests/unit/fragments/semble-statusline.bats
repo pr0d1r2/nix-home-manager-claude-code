@@ -12,7 +12,7 @@ teardown() {
 
 @test "outputs badge when semble binary executable" {
   cat > "$TEST_DIR/bin/mock-semble" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 echo "semble"
 SH
   chmod +x "$TEST_DIR/bin/mock-semble"

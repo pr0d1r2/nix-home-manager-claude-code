@@ -24,7 +24,7 @@ teardown() {
 
 @test "outputs green badge when gh authenticated" {
   cat > "$TEST_DIR/bin/gh" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 if [ "$1" = "auth" ] && [ "$2" = "token" ]; then
   echo "gho_fake_token"
   exit 0
@@ -39,7 +39,7 @@ SH
 
 @test "outputs red badge when gh not authenticated" {
   cat > "$TEST_DIR/bin/gh" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 if [ "$1" = "auth" ] && [ "$2" = "token" ]; then
   exit 1
 fi

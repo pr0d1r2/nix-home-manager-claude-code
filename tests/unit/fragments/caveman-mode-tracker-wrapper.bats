@@ -8,7 +8,7 @@ setup() {
       nix/fragments/caveman-mode-tracker-wrapper.sh > "$SCRIPT"
   mkdir -p "$TEST_DIR/bin" "$TEST_DIR/hooks"
   cat > "$TEST_DIR/bin/mock-node" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 echo "node called: $*"
 SH
   chmod +x "$TEST_DIR/bin/mock-node"

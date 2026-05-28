@@ -20,7 +20,7 @@ teardown() {
 
 @test "outputs badge when fast available and .rb files exist" {
   cat > "$TEST_DIR/bin/mock-fast" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-fast"
@@ -36,7 +36,7 @@ SH
 
 @test "outputs nothing when fast available but no .rb files" {
   cat > "$TEST_DIR/bin/mock-fast" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-fast"
