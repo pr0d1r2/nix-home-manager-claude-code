@@ -20,7 +20,7 @@ teardown() {
 
 @test "outputs green badge when worker running" {
   cat > "$TEST_DIR/bin/mock-cavemem" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-cavemem"
@@ -35,7 +35,7 @@ SH
 
 @test "outputs red badge when worker not running" {
   cat > "$TEST_DIR/bin/mock-cavemem" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-cavemem"
@@ -50,7 +50,7 @@ SH
 
 @test "outputs red badge when no pid file" {
   cat > "$TEST_DIR/bin/mock-cavemem" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-cavemem"

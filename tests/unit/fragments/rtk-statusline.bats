@@ -12,7 +12,7 @@ teardown() {
 
 @test "outputs badge when rtk available" {
   cat > "$TEST_DIR/bin/mock-rtk" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 echo "rtk 1.0.0"
 SH
   chmod +x "$TEST_DIR/bin/mock-rtk"

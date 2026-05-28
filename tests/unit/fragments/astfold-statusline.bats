@@ -20,12 +20,14 @@ teardown() {
 
 @test "outputs badge when fast available and .rb files exist" {
   cat > "$TEST_DIR/bin/mock-fast" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-fast"
-  touch "$TEST_DIR/app.rb"
+  mkdir -p "$TEST_DIR/project"
+  touch "$TEST_DIR/project/app.rb"
   sed "s|@fast@|$TEST_DIR/bin/mock-fast|g" "$OLDPWD/nix/fragments/astfold-statusline.sh" > "$SCRIPT"
+  cd "$TEST_DIR/project" || exit
   run bash "$SCRIPT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"[ASTFOLD]"* ]]
@@ -34,7 +36,7 @@ SH
 
 @test "outputs nothing when fast available but no .rb files" {
   cat > "$TEST_DIR/bin/mock-fast" <<'SH'
-#!/usr/bin/env bash
+#!/bin/sh
 exit 0
 SH
   chmod +x "$TEST_DIR/bin/mock-fast"
