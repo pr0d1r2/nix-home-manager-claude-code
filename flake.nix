@@ -77,6 +77,7 @@
               nativeBuildInputs = with pkgs; [
                 bash
                 bats
+                findutils
                 git
                 jq
               ];
