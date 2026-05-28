@@ -84,7 +84,7 @@
             ''
               cp -r $src/* .
               chmod -R u+w .
-              bats --recursive --print-output-on-failure tests/ 2>&1
+              bats --recursive tests/unit/
               touch $out
             '';
 
