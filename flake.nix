@@ -80,6 +80,7 @@
                 findutils
                 git
                 jq
+                procps
               ];
               src = ./.;
             }
