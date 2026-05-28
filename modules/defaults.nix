@@ -19,8 +19,6 @@ in
             source = ../files/commands/humor;
             recursive = true;
           };
-          "humor/sarcasm".source = ../files/commands/humor/sarcasm.md;
-          "humor/terminator".source = ../files/commands/humor/terminator.md;
         };
       }
 
