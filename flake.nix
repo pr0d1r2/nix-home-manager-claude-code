@@ -75,6 +75,7 @@
           pkgs.runCommand "bats-tests"
             {
               nativeBuildInputs = with pkgs; [
+                bash
                 bats
                 git
                 jq
