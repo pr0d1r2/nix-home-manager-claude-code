@@ -5,7 +5,7 @@ setup() {
   TEST_DIR="$(mktemp -d)"
   cd "$TEST_DIR" || exit
   git init -q
-  git commit --allow-empty -m "init" -q
+  git -c user.name=test -c user.email=test@test commit --allow-empty -m "init" -q
 }
 
 teardown() {
