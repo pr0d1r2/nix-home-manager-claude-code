@@ -11,7 +11,13 @@ teardown() {
 }
 
 @test "outputs nothing when gh not installed" {
-  PATH="/usr/bin:/bin" run bash nix/fragments/gh-statusline.sh
+  # Shadow any real gh with stub that command -v won't find
+  rm -f "$TEST_DIR/bin/gh"
+  hash -r 2>/dev/null || true
+  if command -v gh >/dev/null 2>&1; then
+    skip "gh is installed, cannot test missing-gh path"
+  fi
+  run bash nix/fragments/gh-statusline.sh
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
