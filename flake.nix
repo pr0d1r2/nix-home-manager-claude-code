@@ -84,25 +84,10 @@
           claude-code-overlay = inputs.claude-code-nix.overlays.default;
         };
 
-        bats =
-          pkgs.runCommand "bats-tests"
-            {
-              nativeBuildInputs = with pkgs; [
-                bash
-                bats
-                findutils
-                git
-                jq
-                procps
-              ];
-              src = ./.;
-            }
-            ''
-              cp -r $src/* .
-              chmod -R u+w .
-              bats --recursive tests/unit/
-              touch $out
-            '';
+        bats = import ./tests/bats.nix {
+          inherit pkgs;
+          src = ./.;
+        };
 
         integration = import ./tests/integration.nix {
           inherit pkgs;
