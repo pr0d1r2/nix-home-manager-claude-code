@@ -84,9 +84,6 @@
           claude-code-overlay = inputs.claude-code-nix.overlays.default;
         };
 
-        claude-code-package =
-          inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
-
         bats =
           pkgs.runCommand "bats-tests"
             {
