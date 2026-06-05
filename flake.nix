@@ -111,6 +111,20 @@
             inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
         };
 
+        claude-code-binary =
+          let
+            inherit (inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}) claude-code;
+          in
+          pkgs.runCommand "claude-code-binary-check"
+            {
+              nativeBuildInputs = [ pkgs.bash ];
+              src = ./tests/check-claude-code-binary.sh;
+            }
+            ''
+              bash $src ${claude-code}
+              touch $out
+            '';
+
         default = pkgs.runCommand "nix-home-manager-claude-code-checks" { } ''
           touch $out
         '';
