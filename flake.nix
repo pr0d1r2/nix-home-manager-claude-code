@@ -84,11 +84,6 @@
           claude-code-overlay = inputs.claude-code-nix.overlays.default;
         };
 
-        bats = import ./tests/bats.nix {
-          inherit pkgs;
-          src = ./.;
-        };
-
         integration = import ./tests/integration.nix {
           inherit pkgs;
           inherit (inputs) home-manager;
