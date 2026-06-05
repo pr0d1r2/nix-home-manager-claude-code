@@ -1,6 +1,8 @@
 {
   pkgs,
   home-manager,
+  claude-code-package ? null,
+  claude-code-overlay ? null,
 }:
 let
   evalModule =
@@ -145,6 +147,13 @@ let
     };
   };
 
+  withClaudeCodePackage = evalModule {
+    programs.claude-code = {
+      enable = true;
+      package = claude-code-package;
+    };
+  };
+
   hasHomeFile = cfg: name: builtins.hasAttr name cfg.home.file;
 
   assertHomeFile =
@@ -180,6 +189,13 @@ let
     else
       builtins.throw "${label}: expected settings.\"${key}\" to exist";
 
+  assertPackageInstalled =
+    label: cfg: pkg:
+    if builtins.elem pkg cfg.home.packages then
+      true
+    else
+      builtins.throw "${label}: expected package in home.packages";
+
   assertEnabledPlugins =
     label: cfg: expected:
     let
@@ -212,7 +228,42 @@ let
     (assertActivation "clean-plugin-data" withCleanPluginData "claudeCleanPluginData")
     (assertHomeFile "credentials" withCredentials ".claude/.credentials.json")
     (assertNoHomeFile "no-credentials" withoutCredentials ".claude/.credentials.json")
-  ];
+  ]
+  ++ (
+    if claude-code-package != null then
+      [
+        (assertPackageInstalled "claude-code-package" withClaudeCodePackage claude-code-package)
+      ]
+    else
+      [ ]
+  )
+  ++ (
+    if claude-code-overlay != null then
+      let
+        overlayPkgs = import pkgs.path {
+          localSystem = pkgs.stdenv.hostPlatform.system;
+          config.allowUnfree = true;
+          overlays = [ claude-code-overlay ];
+        };
+        withOverlayPackage = evalModule {
+          programs.claude-code = {
+            enable = true;
+            package = overlayPkgs.claude-code;
+          };
+        };
+      in
+      [
+        (
+          if builtins.hasAttr "claude-code" overlayPkgs then
+            true
+          else
+            builtins.throw "overlay: expected pkgs.claude-code to exist after applying overlay"
+        )
+        (assertPackageInstalled "overlay-package" withOverlayPackage overlayPkgs.claude-code)
+      ]
+    else
+      [ ]
+  );
 
   allPass = builtins.all (x: x) checks;
 in

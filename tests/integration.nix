@@ -1,6 +1,7 @@
 {
   pkgs,
   home-manager,
+  claude-code-package ? null,
 }:
 let
   mkConfig =
@@ -56,16 +57,40 @@ let
       presets.doomer = true;
     };
   };
+
+  withPackage =
+    if claude-code-package != null then
+      mkConfig {
+        programs.claude-code = {
+          enable = true;
+          package = claude-code-package;
+        };
+      }
+    else
+      null;
 in
 pkgs.runCommand "integration-tests"
   {
     nativeBuildInputs = [
       basic
       presetsAll
-    ];
+    ]
+    ++ (if withPackage != null then [ withPackage ] else [ ]);
   }
-  ''
-    bash ${../tests/check-integration.sh} "${basic}"
-    bash ${../tests/check-presets-all.sh} "${presetsAll}"
-    touch $out
-  ''
+  (
+    ''
+      bash ${../tests/check-integration.sh} "${basic}"
+      bash ${../tests/check-presets-all.sh} "${presetsAll}"
+    ''
+    + (
+      if withPackage != null then
+        ''
+          bash ${../tests/check-claude-code-package.sh} "${withPackage}"
+        ''
+      else
+        ""
+    )
+    + ''
+      touch $out
+    ''
+  )

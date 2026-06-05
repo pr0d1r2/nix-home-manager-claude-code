@@ -44,6 +44,10 @@
       url = "github:pr0d1r2/nix-lefthook-markdownlint-agentic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-code-nix = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -65,11 +69,23 @@
     {
       homeManagerModules.default = import ./modules/default.nix;
 
+      overlays.claude-code = inputs.claude-code-nix.overlays.default;
+
+      packages = nixpkgs.lib.genAttrs supportedSystems (system: {
+        inherit (inputs.claude-code-nix.packages.${system}) claude-code;
+      });
+
       checks = forAllSystems (pkgs: {
         eval-module = import ./tests/eval-module.nix {
           inherit pkgs;
           inherit (inputs) home-manager;
+          claude-code-package =
+            inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
+          claude-code-overlay = inputs.claude-code-nix.overlays.default;
         };
+
+        claude-code-package =
+          inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
 
         bats =
           pkgs.runCommand "bats-tests"
@@ -94,6 +110,8 @@
         integration = import ./tests/integration.nix {
           inherit pkgs;
           inherit (inputs) home-manager;
+          claude-code-package =
+            inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
         };
 
         default = pkgs.runCommand "nix-home-manager-claude-code-checks" { } ''
