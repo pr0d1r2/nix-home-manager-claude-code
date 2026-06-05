@@ -154,6 +154,15 @@ let
     };
   };
 
+  withPackageAndPresets = evalModule {
+    programs.claude-code = {
+      enable = true;
+      package = claude-code-package;
+      presets.security = true;
+      settings.theme = "dark";
+    };
+  };
+
   hasHomeFile = cfg: name: builtins.hasAttr name cfg.home.file;
 
   assertHomeFile =
@@ -233,6 +242,8 @@ let
     if claude-code-package != null then
       [
         (assertPackageInstalled "claude-code-package" withClaudeCodePackage claude-code-package)
+        (assertPackageInstalled "package-with-presets" withPackageAndPresets claude-code-package)
+        (assertActivation "package-presets-settings" withPackageAndPresets "claudeSettings")
       ]
     else
       [ ]
