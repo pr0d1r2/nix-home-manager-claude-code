@@ -24,7 +24,7 @@ let
     coreutils = "${pkgs.coreutils}/bin";
     nixSettings = builtins.toJSON mergedSettings;
     enabledPlugins = builtins.toJSON cfg._internal.enabledPlugins;
-    mergeScript = ../lib/merge-settings.sh;
+    mergeScript = pkgs.writeText "merge-settings.sh" (builtins.readFile ../lib/merge-settings.sh);
   };
 in
 {

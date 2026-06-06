@@ -100,7 +100,7 @@ let
     jq = "${pkgs.jq}/bin";
     coreutils = "${pkgs.coreutils}/bin";
     nixMcp = builtins.toJSON mcpConfig;
-    mergeScript = ../lib/merge-mcp.sh;
+    mergeScript = pkgs.writeText "merge-mcp.sh" (builtins.readFile ../lib/merge-mcp.sh);
   };
 in
 {

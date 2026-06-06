@@ -60,20 +60,22 @@ let
   cleanCacheScript = pkgs.replaceVars ../lib/run-clean-plugin-cache.sh {
     coreutils = "${pkgs.coreutils}/bin";
     inherit managedNames;
-    cleanScript = ../lib/clean-plugin-cache.sh;
+    cleanScript = pkgs.writeText "clean-plugin-cache.sh" (
+      builtins.readFile ../lib/clean-plugin-cache.sh
+    );
   };
 
   cleanDataScript = pkgs.replaceVars ../lib/run-clean-plugin-data.sh {
     coreutils = "${pkgs.coreutils}/bin";
     managedPlugins = managedNames;
-    cleanScript = ../lib/clean-plugin-data.sh;
+    cleanScript = pkgs.writeText "clean-plugin-data.sh" (builtins.readFile ../lib/clean-plugin-data.sh);
   };
 
   mergeBlocklistScript = pkgs.replaceVars ../lib/run-merge-blocklist.sh {
     jq = "${pkgs.jq}/bin";
     coreutils = "${pkgs.coreutils}/bin";
     nixBlocked = builtins.toJSON cfg.blockedPlugins;
-    mergeScript = ../lib/merge-blocklist.sh;
+    mergeScript = pkgs.writeText "merge-blocklist.sh" (builtins.readFile ../lib/merge-blocklist.sh);
   };
 in
 {
