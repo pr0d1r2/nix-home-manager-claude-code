@@ -12,6 +12,7 @@ OLD_NIX_BLOCKED="$(cat "$HOME/.claude/.nix-managed-blocked-keys.json" 2>/dev/nul
     bash @mergeScript@ \
     "$HOME/.claude/blocklist.json"
 
+mkdir -p "$HOME/.claude"
 cat <<'__NIX_JSON_EOF__' >"$HOME/.claude/.nix-managed-blocked-keys.json"
 @nixBlocked@
 __NIX_JSON_EOF__

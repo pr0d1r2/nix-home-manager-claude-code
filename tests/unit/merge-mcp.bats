@@ -79,3 +79,14 @@ teardown() {
     [ -f "$TARGET" ]
     [ ! -f "${TARGET}.tmp" ]
 }
+
+@test "creates parent directory when absent" {
+    TARGET="$TEST_DIR/subdir/.mcp.json"
+    MANAGED_KEYS="$TEST_DIR/subdir/.nix-managed-mcp-keys.json"
+
+    NIX_MCP='{"mcpServers":{"s":{"type":"stdio","command":"s"}}}' \
+        bash lib/merge-mcp.sh "$TARGET" "$MANAGED_KEYS"
+
+    [ -f "$TARGET" ]
+    [ -f "$MANAGED_KEYS" ]
+}

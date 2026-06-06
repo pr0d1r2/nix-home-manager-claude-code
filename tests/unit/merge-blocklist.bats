@@ -80,3 +80,12 @@ teardown() {
     [ -f "$TARGET" ]
     [ ! -f "${TARGET}.tmp" ]
 }
+
+@test "creates parent directory when absent" {
+    TARGET="$TEST_DIR/subdir/blocklist.json"
+
+    NIX_BLOCKED='["x@m"]' \
+        bash lib/merge-blocklist.sh "$TARGET"
+
+    [ -f "$TARGET" ]
+}

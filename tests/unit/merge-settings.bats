@@ -111,3 +111,15 @@ teardown() {
 
   [ "$(jq 'has("model")' "$TARGET")" = "false" ]
 }
+
+@test "creates parent directory when absent" {
+  TARGET="$TEST_DIR/subdir/settings.json"
+  MANAGED_KEYS="$TEST_DIR/subdir/.nix-managed-keys.json"
+
+  NIX_SETTINGS='{"key":"val"}' \
+  ENABLED_PLUGINS='[]' \
+    bash lib/merge-settings.sh "$TARGET" "$MANAGED_KEYS"
+
+  [ -f "$TARGET" ]
+  [ -f "$MANAGED_KEYS" ]
+}

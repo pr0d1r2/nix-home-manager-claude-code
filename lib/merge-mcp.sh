@@ -30,8 +30,10 @@ result="$(
   '
 )"
 
+mkdir -p "$(dirname "$target")"
 tmp="${target}.tmp"
 echo "$result" >"$tmp"
 mv "$tmp" "$target"
 
+mkdir -p "$(dirname "$managed_keys_file")"
 echo "$new_managed" >"$managed_keys_file"

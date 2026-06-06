@@ -21,6 +21,7 @@ result="$(
   '
 )"
 
+mkdir -p "$(dirname "$target")"
 tmp="${target}.tmp"
 echo "$result" >"$tmp"
 mv "$tmp" "$target"
