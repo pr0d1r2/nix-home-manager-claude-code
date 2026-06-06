@@ -2,10 +2,12 @@
 
 SRC="lib/run-merge-settings.sh"
 
-@test "NIX_SETTINGS uses single quotes to prevent JSON double-quote breakage" {
-  grep -q "NIX_SETTINGS='@nixSettings@'" "$SRC"
+@test "NIX_SETTINGS uses heredoc to safely embed JSON" {
+  grep -q "cat <<'__NIX_JSON_EOF__'" "$SRC"
+  grep -q '@nixSettings@' "$SRC"
 }
 
-@test "ENABLED_PLUGINS uses single quotes to prevent JSON double-quote breakage" {
-  grep -q "ENABLED_PLUGINS='@enabledPlugins@'" "$SRC"
+@test "no bare single or double quoted JSON vars" {
+  run ! grep -qE "NIX_SETTINGS=['\"]@" "$SRC"
+  run ! grep -qE "ENABLED_PLUGINS=['\"]@" "$SRC"
 }
