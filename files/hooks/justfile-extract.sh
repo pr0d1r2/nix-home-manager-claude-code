@@ -17,11 +17,11 @@ CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD 2>/dev/null | grep -i
 
 # Detect project type for test framework
 if [ -f Gemfile ]; then
-    SKILL="/extract-justfile-scripts-ruby"
-    TESTS="RSpec"
+  SKILL="/extract-justfile-scripts-ruby"
+  TESTS="RSpec"
 else
-    SKILL="/extract-justfile-scripts"
-    TESTS="bats"
+  SKILL="/extract-justfile-scripts"
+  TESTS="bats"
 fi
 
 cat <<EOF

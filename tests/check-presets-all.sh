@@ -6,33 +6,33 @@ HOME_FILES="$GEN/home-files"
 FAIL=0
 
 check_file() {
-    if [ ! -e "$HOME_FILES/$1" ]; then
-        echo "FAIL: missing $1"
-        FAIL=1
-    fi
+  if [ ! -e "$HOME_FILES/$1" ]; then
+    echo "FAIL: missing $1"
+    FAIL=1
+  fi
 }
 
 check_dir() {
-    if [ ! -d "$HOME_FILES/$1" ]; then
-        echo "FAIL: missing directory $1"
-        FAIL=1
-    fi
+  if [ ! -d "$HOME_FILES/$1" ]; then
+    echo "FAIL: missing directory $1"
+    FAIL=1
+  fi
 }
 
 check_activation() {
-    if ! grep -q "$1" "$GEN/activate"; then
-        echo "FAIL: activation missing $1"
-        FAIL=1
-    fi
+  if ! grep -q "$1" "$GEN/activate"; then
+    echo "FAIL: activation missing $1"
+    FAIL=1
+  fi
 }
 
 check_wrapper() {
-    local wrapper
-    wrapper="$(grep -o '/nix/store/[^ ]*run-merge-settings.sh' "$GEN/activate")"
-    if ! grep -q "$1" "$wrapper"; then
-        echo "FAIL: merge-settings wrapper missing $1"
-        FAIL=1
-    fi
+  local wrapper
+  wrapper="$(grep -o '/nix/store/[^ ]*run-merge-settings.sh' "$GEN/activate")"
+  if ! grep -q "$1" "$wrapper"; then
+    echo "FAIL: merge-settings wrapper missing $1"
+    FAIL=1
+  fi
 }
 
 check_dir ".claude/hooks"
@@ -60,8 +60,8 @@ check_file ".claude/hooks/astfold-statusline.sh"
 # Hook count
 count="$(find "$HOME_FILES/.claude/hooks" -type l -o -type f | wc -l | tr -d ' ')"
 if [ "$count" -ne 17 ]; then
-    echo "FAIL: expected 17 hook scripts, got $count"
-    FAIL=1
+  echo "FAIL: expected 17 hook scripts, got $count"
+  FAIL=1
 fi
 
 # Commands
@@ -81,7 +81,7 @@ check_wrapper "SessionStart"
 check_wrapper "UserPromptSubmit"
 
 if [ "$FAIL" -ne 0 ]; then
-    exit 1
+  exit 1
 fi
 
 echo "All presets.all checks passed"

@@ -8,10 +8,10 @@ CHANGED="$1"
 
 UNCOVERED=""
 for f in $(echo "$CHANGED" | grep '\.rb$' | grep -v '_spec\.rb$' | grep -v 'spec/' || true); do
-    [ -f "$f" ] || continue
-    spec_path="spec/$(echo "$f" | sed 's|^app/||; s|^lib/||; s|\.rb$|_spec.rb|')"
-    [ -f "$spec_path" ] && continue
-    UNCOVERED="$UNCOVERED $f"
+  [ -f "$f" ] || continue
+  spec_path="spec/$(echo "$f" | sed 's|^app/||; s|^lib/||; s|\.rb$|_spec.rb|')"
+  [ -f "$spec_path" ] && continue
+  UNCOVERED="$UNCOVERED $f"
 done
 
 [ -z "$UNCOVERED" ] && exit 0

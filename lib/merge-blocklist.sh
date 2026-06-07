@@ -6,17 +6,17 @@ nix_blocked="${NIX_BLOCKED:?NIX_BLOCKED env var required}"
 old_nix_blocked="${OLD_NIX_BLOCKED:-[]}"
 
 if [ ! -f "$target" ]; then
-    existing='[]'
+  existing='[]'
 else
-    existing="$(cat "$target")"
+  existing="$(cat "$target")"
 fi
 
 result="$(
-    jq -n \
-        --argjson existing "$existing" \
-        --argjson nix "$nix_blocked" \
-        --argjson old_nix "$old_nix_blocked" \
-        '
+  jq -n \
+    --argjson existing "$existing" \
+    --argjson nix "$nix_blocked" \
+    --argjson old_nix "$old_nix_blocked" \
+    '
     ($existing - $old_nix) + $nix | unique
   '
 )"
