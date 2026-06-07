@@ -22,11 +22,11 @@ HOOK_DIR="$(cd "$(dirname "$0")" && pwd)/coverage.d"
 
 OUTPUT=""
 for checker in "$HOOK_DIR"/*.sh; do
-    [ -f "$checker" ] || continue
-    RESULT=$(bash "$checker" "$CHANGED" 2>/dev/null || true)
-    if [ -n "$RESULT" ]; then
-        OUTPUT="${OUTPUT}${RESULT}\n\n"
-    fi
+  [ -f "$checker" ] || continue
+  RESULT=$(bash "$checker" "$CHANGED" 2>/dev/null || true)
+  if [ -n "$RESULT" ]; then
+    OUTPUT="${OUTPUT}${RESULT}\n\n"
+  fi
 done
 
 [ -z "$OUTPUT" ] && exit 0

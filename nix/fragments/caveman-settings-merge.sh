@@ -5,11 +5,11 @@ set -euo pipefail
 SETTINGS="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json"
 
 if [ ! -f "$SETTINGS" ]; then
-    exit 0
+  exit 0
 fi
 
 if grep -q 'caveman-activate' "$SETTINGS" 2>/dev/null; then
-    exit 0
+  exit 0
 fi
 
 @jq@ '

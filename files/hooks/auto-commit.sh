@@ -5,7 +5,7 @@ cd ~/.claude
 
 # Check if there are any changes to commit
 if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-    exit 0
+  exit 0
 fi
 
 # Stage all tracked changes and new untracked files (respecting .gitignore)

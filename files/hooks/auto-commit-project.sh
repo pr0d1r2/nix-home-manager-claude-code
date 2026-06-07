@@ -10,14 +10,14 @@ LOCK="/tmp/auto-commit-project-$(git rev-parse --show-toplevel | md5sum | cut -d
 
 # Prevent re-entry
 if [ -f "$LOCK" ]; then
-    exit 0
+  exit 0
 fi
 trap 'rm -f "$LOCK"' EXIT
 touch "$LOCK"
 
 # Check if there are any changes to commit
 if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-    exit 0
+  exit 0
 fi
 
 git add -A
