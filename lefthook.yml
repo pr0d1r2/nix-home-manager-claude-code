@@ -151,6 +151,7 @@ pre-commit:
       run: timeout ${LEFTHOOK_YAMLLINT_TIMEOUT:-30} lefthook-yamllint {staged_files}
     nix-flake-check:
       skip: true
+      run: "true"
 
 pre-push:
   parallel: true
