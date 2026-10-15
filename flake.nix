@@ -97,6 +97,11 @@
           inherit (inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}) claude-code;
         };
 
+        hybrid = import ./tests/hybrid.nix {
+          inherit pkgs;
+          inherit (inputs) home-manager;
+        };
+
         default = pkgs.runCommand "nix-home-manager-claude-code-checks" { } ''
           touch $out
         '';
