@@ -20,30 +20,37 @@
     nix-dev-shell-agentic = {
       url = "github:pr0d1r2/nix-dev-shell-agentic";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-cavemem.follows = "nix-cavemem";
     };
     nix-lefthook-nix-flake-eval = {
       url = "github:pr0d1r2/nix-lefthook-nix-flake-eval";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-no-shell-functions = {
       url = "github:pr0d1r2/nix-lefthook-no-shell-functions";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-commit-msg-lint = {
       url = "github:pr0d1r2/nix-lefthook-commit-msg-lint";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-bats-changed = {
       url = "github:pr0d1r2/nix-lefthook-bats-changed";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-linter-coverage = {
       url = "github:pr0d1r2/nix-lefthook-linter-coverage";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-markdownlint-agentic = {
       url = "github:pr0d1r2/nix-lefthook-markdownlint-agentic";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix";
