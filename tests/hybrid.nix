@@ -54,12 +54,15 @@ let
     in
     r.success;
 
+  # home-manager release-26.05 keys home.file by absolute path; strip the
+  # home prefix so assertions hold across releases.
   matchKeys =
     modules: suf:
     let
       cfg = evalWith modules;
+      rel = lib.removePrefix "${homeBase.home.homeDirectory}/";
     in
-    builtins.filter (n: lib.hasSuffix suf n) (builtins.attrNames cfg.home.file);
+    builtins.filter (n: lib.hasSuffix suf n) (map rel (builtins.attrNames cfg.home.file));
 
   # ---- fact 1 + 4b: upstream settings.json guard ----
   settingsEmptyKeys = matchKeys [ { programs.claude-code.enable = true; } ] "settings.json";
