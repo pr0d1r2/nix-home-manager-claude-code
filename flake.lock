@@ -114,6 +114,22 @@
         "type": "github"
       }
     },
+    "nix-cavemem-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791233136,
+        "narHash": "sha256-bPLyNMRX1abuRt1jKXDJ7mqH0bjxmuOY8GYYR6756r8=",
+        "owner": "pr0d1r2",
+        "repo": "nix-cavemem",
+        "rev": "aadaf24ecb36e3de84af5dae0cf4e6a140549ddd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pr0d1r2",
+        "repo": "nix-cavemem",
+        "type": "github"
+      }
+    },
     "nix-dev-shell-agentic": {
       "inputs": {
         "nix-cavekit": "nix-cavekit",
@@ -1512,6 +1528,7 @@
         "claude-code-nix": "claude-code-nix",
         "home-manager": "home-manager",
         "nix-cavemem": "nix-cavemem",
+        "nix-cavemem-src": "nix-cavemem-src",
         "nix-dev-shell-agentic": "nix-dev-shell-agentic",
         "nix-lefthook-bats-changed": "nix-lefthook-bats-changed",
         "nix-lefthook-commit-msg-lint": "nix-lefthook-commit-msg-lint",

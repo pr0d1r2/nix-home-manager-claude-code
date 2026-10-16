@@ -17,6 +17,11 @@
       url = "github:pr0d1r2/nix-cavemem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Source only: the flake no longer exports a package (nix-cavemem#89).
+    nix-cavemem-src = {
+      url = "github:pr0d1r2/nix-cavemem";
+      flake = false;
+    };
     nix-dev-shell-agentic = {
       url = "github:pr0d1r2/nix-dev-shell-agentic";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -73,6 +78,12 @@
       ];
       forAllSystems =
         f: nixpkgs.lib.genAttrs supportedSystems (system: f nixpkgs.legacyPackages.${system});
+      cavememFor =
+        pkgs:
+        import ./nix/cavemem.nix {
+          inherit pkgs;
+          inherit (inputs) nix-cavemem-src;
+        };
     in
     {
       homeManagerModules.default = import ./modules/default.nix;
@@ -81,6 +92,7 @@
 
       packages = nixpkgs.lib.genAttrs supportedSystems (system: {
         inherit (inputs.claude-code-nix.packages.${system}) claude-code;
+        cavemem = cavememFor nixpkgs.legacyPackages.${system};
       });
 
       checks = forAllSystems (pkgs: {
@@ -106,7 +118,7 @@
 
         cavemem-gc = import ./tests/cavemem-gc.nix {
           inherit pkgs;
-          cavemem = inputs.nix-cavemem.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          cavemem = cavememFor pkgs;
         };
 
         hybrid = import ./tests/hybrid.nix {
@@ -132,8 +144,17 @@
 
       devShells = forAllSystems (
         pkgs:
-        nix-dev-shell-agentic.lib.mkShells {
-          inherit pkgs inputs;
+        let
+          shells = nix-dev-shell-agentic.lib.mkShells {
+            inherit pkgs inputs;
+          };
+        in
+        shells
+        // {
+          # Prepend so it shadows agentic's cavemem 0.1.3 on PATH.
+          default = shells.default.overrideAttrs (old: {
+            nativeBuildInputs = [ (cavememFor pkgs) ] ++ old.nativeBuildInputs;
+          });
         }
       );
     };
