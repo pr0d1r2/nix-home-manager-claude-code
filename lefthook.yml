@@ -152,7 +152,7 @@ pre-commit:
     lock-unique:
       glob: "flake.lock"
       env:
-        LOCK_UNIQUE_REPOS: "rtk-ai/rtk pr0d1r2/nix-rtk pr0d1r2/nix-cavemem"
+        LOCK_UNIQUE_REPOS: "rtk-ai/rtk pr0d1r2/nix-rtk"
       run: timeout ${LEFTHOOK_LOCK_UNIQUE_TIMEOUT:-30} bash scripts/check-lock-unique.sh flake.lock $LOCK_UNIQUE_REPOS
     nix-flake-check:
       skip: true
@@ -201,5 +201,5 @@ pre-push:
     lock-unique:
       glob: "flake.lock"
       env:
-        LOCK_UNIQUE_REPOS: "rtk-ai/rtk pr0d1r2/nix-rtk pr0d1r2/nix-cavemem"
+        LOCK_UNIQUE_REPOS: "rtk-ai/rtk pr0d1r2/nix-rtk"
       run: timeout ${LEFTHOOK_LOCK_UNIQUE_TIMEOUT:-30} bash scripts/check-lock-unique.sh flake.lock $LOCK_UNIQUE_REPOS
