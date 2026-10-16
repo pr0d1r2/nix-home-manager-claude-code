@@ -17,33 +17,45 @@
       url = "github:pr0d1r2/nix-cavemem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Source only: the flake no longer exports a package (nix-cavemem#89).
+    nix-cavemem-src = {
+      url = "github:pr0d1r2/nix-cavemem";
+      flake = false;
+    };
     nix-dev-shell-agentic = {
       url = "github:pr0d1r2/nix-dev-shell-agentic";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-cavemem.follows = "nix-cavemem";
     };
     nix-lefthook-nix-flake-eval = {
       url = "github:pr0d1r2/nix-lefthook-nix-flake-eval";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-no-shell-functions = {
       url = "github:pr0d1r2/nix-lefthook-no-shell-functions";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-commit-msg-lint = {
       url = "github:pr0d1r2/nix-lefthook-commit-msg-lint";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-bats-changed = {
       url = "github:pr0d1r2/nix-lefthook-bats-changed";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-linter-coverage = {
       url = "github:pr0d1r2/nix-lefthook-linter-coverage";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     nix-lefthook-markdownlint-agentic = {
       url = "github:pr0d1r2/nix-lefthook-markdownlint-agentic";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-dev-shell-agentic.follows = "nix-dev-shell-agentic";
     };
     claude-code-nix = {
       url = "github:sadjow/claude-code-nix";
@@ -66,6 +78,12 @@
       ];
       forAllSystems =
         f: nixpkgs.lib.genAttrs supportedSystems (system: f nixpkgs.legacyPackages.${system});
+      cavememFor =
+        pkgs:
+        import ./nix/cavemem.nix {
+          inherit pkgs;
+          inherit (inputs) nix-cavemem-src;
+        };
     in
     {
       homeManagerModules.default = import ./modules/default.nix;
@@ -74,6 +92,7 @@
 
       packages = nixpkgs.lib.genAttrs supportedSystems (system: {
         inherit (inputs.claude-code-nix.packages.${system}) claude-code;
+        cavemem = cavememFor nixpkgs.legacyPackages.${system};
       });
 
       checks = forAllSystems (pkgs: {
@@ -95,6 +114,11 @@
         claude-code-binary = import ./tests/claude-code-binary.nix {
           inherit pkgs;
           inherit (inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}) claude-code;
+        };
+
+        cavemem-gc = import ./tests/cavemem-gc.nix {
+          inherit pkgs;
+          cavemem = cavememFor pkgs;
         };
 
         hybrid = import ./tests/hybrid.nix {
@@ -120,8 +144,17 @@
 
       devShells = forAllSystems (
         pkgs:
-        nix-dev-shell-agentic.lib.mkShells {
-          inherit pkgs inputs;
+        let
+          shells = nix-dev-shell-agentic.lib.mkShells {
+            inherit pkgs inputs;
+          };
+        in
+        shells
+        // {
+          # Prepend so it shadows agentic's cavemem 0.1.3 on PATH.
+          default = shells.default.overrideAttrs (old: {
+            nativeBuildInputs = [ (cavememFor pkgs) ] ++ old.nativeBuildInputs;
+          });
         }
       );
     };
