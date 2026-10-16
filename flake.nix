@@ -104,6 +104,11 @@
           inherit (inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}) claude-code;
         };
 
+        cavemem-gc = import ./tests/cavemem-gc.nix {
+          inherit pkgs;
+          cavemem = inputs.nix-cavemem.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        };
+
         hybrid = import ./tests/hybrid.nix {
           inherit pkgs;
           inherit (inputs) home-manager;
